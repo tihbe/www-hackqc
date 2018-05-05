@@ -69,6 +69,11 @@ class Upload(tornado.web.RequestHandler):
         self.finish()
     def post(self):
         fileinfo = self.request.files['filearg'][0]
+        lng = self.get_argument("lng", default=None, strip=False)
+        lat = self.get_argument("lat", default=None, strip=False)
+        if lng is None or lat is None:
+            return self.finish(json_util.dumps({"err": "Longitude or latitude missing"}))
+
         image = np.array(Image.open(BytesIO(fileinfo['body'])))
         height, width, _ = image.shape
         timestamp = '{:%Y-%b-%d %H:%M:%S}'.format(datetime.datetime.now())
@@ -97,7 +102,9 @@ class Upload(tornado.web.RequestHandler):
                 "id" : current_id,
                 "area": object_area
             }
-            object_array.append(current_object)
+
+            if class_names[class_id] not in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
+                object_array.append(current_object)
 
         result_obj['objects'] = object_array
         self.finish(json_util.dumps(result_obj))
