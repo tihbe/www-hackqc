@@ -97,7 +97,7 @@ class Upload(tornado.web.RequestHandler):
         for current_id, (class_id, bounding_box, score) in enumerate(zip(result['class_ids'], result['rois'], result['scores'])):
             if score < THRESHOLD:
                 continue
-            if class_names[class_id] not in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
+            if class_names[class_id] in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
                 continue
 
             current_object = {
