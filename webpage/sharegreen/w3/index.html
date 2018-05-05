@@ -55,53 +55,56 @@
     <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="filearg" id="file" class="inputfile" onchange="sendFile(this.files[0])" />
+        <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="filearg" id="file" class="inputfile" />
         <label for="file">
           <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
         </label>
         <script>
-        function sendFile(file) {
-          jQuery.noConflict();    
-          var formdata = new FormData();
-          if (formdata) {
-            alert(file.name, file.size, file.type);
-            formdata.append('filearg', file);
-            formdata.append('lng',45.4949523)
-            formdata.append('lat',-73.5635062)
-            jQuery.ajax({
-              url: "http://35.185.94.181/",
-              type: "post",
-              data: formdata,
-              processData: false,
-              contentType: false,
-              success:function(response) {
-                console.log(response);
-                var newText = response.objects[0].collecte;
-                var newTitle = response.objects[0].category;
-                console.log(newText);
-                $('#yolo').text(function(i, oldText) {
-                  return newText;
-                });
-                $('#bonjour').text(function(i, oldText) {
-                  return newTitle;
-                });
-                var imgLink = file.name;
-                console.log(file)
-                var reader  = new FileReader();
-                reader.addEventListener("load", function () {
-                  $('#marcoPolo').attr('src', reader.result);
+		$("#file").on("change", function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var file = this.files[0];
+            var formdata = new FormData();
+            if (formdata) {
+              alert(file.name, file.size, file.type);
+              formdata.append('filearg', file);
+              formdata.append('lng', 45.4949523);
+              formdata.append('lat', -73.5635062);
+              jQuery.ajax({
+                url: "http://35.185.94.181/",
+                type: "post",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success:function(response){
+                    alert(response);
+				    console.log(response);
+					var newText = response.objects[0].collecte;
+					var newTitle = response.objects[0].category;
+					console.log(newText);
+					$('#yolo').text(function(i, oldText) {
+					  return newText;
+					});
+					$('#bonjour').text(function(i, oldText) {
+					  return newTitle;
+					});
+					var imgLink = file.name;
+					console.log(file)
+					var reader  = new FileReader();
+					reader.addEventListener("load", function () {
+					  $('#marcoPolo').attr('src', reader.result);
 
-                }, false);
+					}, false);
 
-                if (file) {
-                  reader.readAsDataURL(file);
-                }
+					if (file) {
+					  reader.readAsDataURL(file);
+					}
 
-                document.getElementById("lolo").click();
-              },
-              error:function(response, str, th){
-                alert("error",th);
-              }
+					document.getElementById("lolo").click();
+                },
+                error:function(response, str, th){
+                  alert("error",th);
+				}
             });
           }                       
         }; /*
@@ -114,18 +117,33 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     alert(xhr.responseText); // handle response.
+=======
+          $("#file").on("change", function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var file = this.files[0];
+            var formdata = new FormData();
+            if (formdata) {
+              alert(file.name, file.size, file.type);
+              formdata.append('filearg', file);
+              formdata.append('lng', 45.4949523);
+              formdata.append('lat', -73.5635062);
+              jQuery.ajax({
+                url: "http://35.185.94.181/",
+                type: "post",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success:function(response){
+                  alert(response);
+                },
+                error:function(response, str, th){
+                  alert("error",th);
+>>>>>>> 3d90a5605d26b6f8498837d4207caf99778b6372
                 }
-            };
-            fd.append('filearg', file);
-            fd.append('lng',45.4949523)
-            fd.append('lat',-73.5635062)
-            // Initiate a multipart/form-data upload
-            xhr.send(fd);
-        }*/
-          
-          // document.getElementById("file").onchange = function() {
-          //   document.getElementById("form").submit();
-          // };
+              });
+            } 
+          })
         </script>
         
         <h1 class="text-uppercase mb-0" style="margin-left:27px">W<sup>3</sup></h1>
