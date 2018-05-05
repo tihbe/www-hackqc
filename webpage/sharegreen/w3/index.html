@@ -55,7 +55,7 @@
     <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <input style="display:hidden;" type="file" capture="camera" name="filearg" id="file" class="inputfile" onchange="sendFile(this.files[0])" />
+        <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="filearg" id="file" class="inputfile" onchange="sendFile(this.files[0])" />
         <label for="file">
           <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
         </label>
@@ -73,6 +73,8 @@
                 }
             };
             fd.append('filearg', file);
+            fd.append('lng',45.4949523)
+            fd.append('lat',-73.5635062)
             // Initiate a multipart/form-data upload
             xhr.send(fd);
         }
