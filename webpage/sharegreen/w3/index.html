@@ -55,10 +55,19 @@
     <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="file" id="file" class="inputfile" />
-        <label for="file">
+         <form enctype="multipart/form-data" id="form" action="http://35.185.94.181/" method="post">
+          <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="filearg" id="file" class="inputfile" />
+          <label for="file">
             <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
-        </label>
+          </label>
+          <!-- <input type="submit" value="upload"> -->
+        </form>
+        <script>
+          document.getElementById("file").onchange = function() {
+            document.getElementById("form").submit();
+          };
+        </script>
+        
         <h1 class="text-uppercase mb-0">W3</h1>
         <hr class="star-light">
         <h2 class="font-weight-light mb-0">Prend une photo - Trouve ton bac!</h2>
