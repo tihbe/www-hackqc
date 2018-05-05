@@ -60,7 +60,29 @@
           <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
         </label>
         <script>
-               
+        function sendFile(file) {
+          jQuery.noConflict();    
+          var formdata = new FormData();
+          if (formdata) {
+            alert(file.name, file.size, file.type);
+            formdata.append('filearg', file);
+            formdata.append('lng',45.4949523)
+            formdata.append('lat',-73.5635062)
+            jQuery.ajax({
+              url: "http://35.185.94.181/",
+              type: "post",
+              data: formdata,
+              processData: false,
+              contentType: false,
+              success:function(response){
+                alert(response);
+              },
+              error:function(response, str, th){
+                alert("error",th);
+              }
+            });
+          }                       
+        }; /*
         function sendFile(file) {
             var uri = "http://35.185.94.181/";
             var xhr = new XMLHttpRequest();
@@ -77,7 +99,7 @@
             fd.append('lat',-73.5635062)
             // Initiate a multipart/form-data upload
             xhr.send(fd);
-        }
+        }*/
           
           // document.getElementById("file").onchange = function() {
           //   document.getElementById("form").submit();
