@@ -26,7 +26,7 @@ from mrcnn import utils
 from mrcnn import visualize
 import coco
 
-PORT = 8888
+PORT = 80
 
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                 'bus', 'train', 'truck', 'boat', 'traffic light',
