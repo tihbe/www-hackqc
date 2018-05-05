@@ -107,43 +107,7 @@
 				}
             });
           }                       
-        }; /*
-        function sendFile(file) {
-            var uri = "http://35.185.94.181/";
-            var xhr = new XMLHttpRequest();
-            var fd = new FormData();
-            
-            xhr.open("POST", uri, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    alert(xhr.responseText); // handle response.
-=======
-          $("#file").on("change", function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            var file = this.files[0];
-            var formdata = new FormData();
-            if (formdata) {
-              alert(file.name, file.size, file.type);
-              formdata.append('filearg', file);
-              formdata.append('lng', 45.4949523);
-              formdata.append('lat', -73.5635062);
-              jQuery.ajax({
-                url: "http://35.185.94.181/",
-                type: "post",
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success:function(response){
-                  alert(response);
-                },
-                error:function(response, str, th){
-                  alert("error",th);
->>>>>>> 3d90a5605d26b6f8498837d4207caf99778b6372
-                }
-              });
-            } 
-          })
+        }; 
         </script>
         
         <h1 class="text-uppercase mb-0" style="margin-left:27px">W<sup>3</sup></h1>
