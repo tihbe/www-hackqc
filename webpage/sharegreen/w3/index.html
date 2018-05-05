@@ -23,7 +23,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/freelancer.css" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
 
   <body id="page-top">
@@ -55,17 +55,31 @@
     <!-- Header -->
     <header class="masthead bg-primary text-white text-center">
       <div class="container">
-         <form enctype="multipart/form-data" id="form" action="http://35.185.94.181/" method="post">
-          <input style="display:hidden;" type="file" accept="image/*" capture="camera" name="filearg" id="file" class="inputfile" />
-          <label for="file">
-            <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
-          </label>
-          <!-- <input type="submit" value="upload"> -->
-        </form>
+        <input style="display:hidden;" type="file" capture="camera" name="filearg" id="file" class="inputfile" onchange="sendFile(this.files[0])" />
+        <label for="file">
+          <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
+        </label>
         <script>
-          document.getElementById("file").onchange = function() {
-            document.getElementById("form").submit();
-          };
+               
+        function sendFile(file) {
+            var uri = "http://35.185.94.181/";
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            
+            xhr.open("POST", uri, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert(xhr.responseText); // handle response.
+                }
+            };
+            fd.append('filearg', file);
+            // Initiate a multipart/form-data upload
+            xhr.send(fd);
+        }
+          
+          // document.getElementById("file").onchange = function() {
+          //   document.getElementById("form").submit();
+          // };
         </script>
         
         <h1 class="text-uppercase mb-0" style="margin-left:27px">W<sup>3</sup></h1>
