@@ -1,10 +1,7 @@
 {
   "hosting": {
-    "public": "dist/sharegreen",
+    "public": "w3",
     "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
     ]
   }
 }
