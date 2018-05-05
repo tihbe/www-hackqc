@@ -27,6 +27,7 @@ from mrcnn import visualize
 import coco
 
 PORT = 80
+THRESHOLD = 0.75
 
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                 'bus', 'train', 'truck', 'boat', 'traffic light',
@@ -63,6 +64,7 @@ class Upload(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Origin", "*")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.set_header('Content-Type', 'application/json')
     def options(self):
         # no body
         self.set_status(204)
@@ -92,19 +94,23 @@ class Upload(tornado.web.RequestHandler):
         }
         object_array = []
 
-        for current_id, (class_id, bounding_box) in enumerate(zip(result['class_ids'], result['rois'])):
-            object_area = 0 
+        for current_id, (class_id, bounding_box, score) in enumerate(zip(result['class_ids'], result['rois'], result['scores'])):
+            if score < THRESHOLD:
+                continue
+            if class_names[class_id] not in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
+                continue
+
             current_object = {
-                "category_id": int(class_id),
+                #"category_id": int(class_id),
                 "bbox": bounding_box.tolist(),
                 "category": class_names[class_id],
-                "segment": [],
-                "id" : current_id,
-                "area": object_area
+                #"id" : current_id,
+                "type": "Recyclage (bac vert)",
+                "info": u"Saviez-vous que ce genre d'item peut être recyclé en papier journal ?",
+                "collecte": u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
             }
+            object_array.append(current_object)
 
-            if class_names[class_id] not in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
-                object_array.append(current_object)
 
         result_obj['objects'] = object_array
         self.finish(json_util.dumps(result_obj))
@@ -117,4 +123,5 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
     application.listen(PORT)
+    print("Server started")
     tornado.ioloop.IOLoop.instance().start()
