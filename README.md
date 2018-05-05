@@ -14,6 +14,7 @@ sudo  apt-get install -y libsm6 libxext6
 sudo apt-get install libgtk2.0-dev
 sudo pip3 install pycocotools
 sudo apt-get install python3-tk
+sudo pip3 install tornado
 ```
 
 
