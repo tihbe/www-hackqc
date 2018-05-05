@@ -1,3 +1,6 @@
 [submodule "Mask_RCNN"]
 	path = vision_api/Mask_RCNN
 	url = git@github.com:matterport/Mask_RCNN.git
+[submodule "vision_api/Mask_RCNN"]
+	path = vision_api/Mask_RCNN
+	url = git@github.com:matterport/Mask_RCNN.git
