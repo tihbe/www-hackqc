@@ -27,7 +27,7 @@ from mrcnn import visualize
 import coco
 
 PORT = 80
-THRESHOLD = 0.75
+THRESHOLD = 0.80
 
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                 'bus', 'train', 'truck', 'boat', 'traffic light',
@@ -57,6 +57,10 @@ model.load_weights(COCO_MODEL_PATH, by_name=True)
 class Userform(tornado.web.RequestHandler):
     def get(self):
         self.render("fileuploadform.html")
+
+class Index(tornado.web.RequestHandler):
+    def get(self):
+        self.render("../webpage/sharegreen/w3/index.html")
 
 
 class Upload(tornado.web.RequestHandler):
@@ -117,8 +121,13 @@ class Upload(tornado.web.RequestHandler):
 
 
 application = tornado.web.Application([
-        (r"/", Upload),
+        (r"/", Index),
+        (r"/api", Upload),
         (r"/upload", Userform),
+        (r'/js/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/js'}),
+        (r'/css/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/css'}),
+        (r'/vendor/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/vendor'}),
+        (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/img'}),
         ], debug=False)
 
 if __name__ == "__main__":

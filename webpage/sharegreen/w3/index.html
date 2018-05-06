@@ -39,9 +39,6 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Exemples d'articles</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">Notre mission</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
@@ -60,6 +57,22 @@
           <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
         </label>
         <script>
+          var distinctColors = [
+            "#e6194b",
+            "#3cb44b",
+            "#ffe119",
+            "#0082c8",
+            "#f58231",
+            "#911eb4",
+            "#46f0f0",
+            "#f032e6",
+            "#d2f53c",
+            "#008080",
+            "#800000",
+            "#000080",
+            "#808080",
+            "#000000",
+          ];
 		      $("#file").on("change", function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -71,7 +84,7 @@
               formdata.append('lng', 45.4949523);
               formdata.append('lat', -73.5635062);
               jQuery.ajax({
-                url: "http://35.185.94.181/",
+                url: "http://35.185.94.181/api",
                 type: "post",
                 data: formdata,
                 processData: false,
@@ -79,33 +92,68 @@
                 success: function(response) {
                   //alert(response);
                   console.log(response);
-                  var newText = response.objects[0].collecte;
-                  var newTitle = response.objects[0].category;
-                  var funFact = response.objects[0].info;
-
-                  $('#yolo').text(function(i, oldText) {
-                    return newText;
-                  });
-                  $('#bonjour').text(function(i, oldText) {
-                    return newTitle;
-                  });
-                  $('#ff').text(function(i, oldText) {
-                    return funFact;
-                  });
                   var imgLink = file.name;
-                  console.log(file)
                   var reader  = new FileReader();
                   reader.addEventListener("load", function () {
-                    $('#marcoPolo').attr('src', reader.result);
+                    var canvas = $("#image_canvas")[0];
+                    $("#image_canvas").off("mousemove");
+                    canvas.width = response.image.width;
+                    canvas.height = response.image.height;
+                    var image = canvas.getContext("2d");
+                    let imageObject = new Image();
 
+                    imageObject.onload = function () {
+                      image.clearRect(0, 0, response.image.width, response.image.height);
+                      image.drawImage(imageObject, 0, 0);
+                      image.font = "bold 12pt Arial";
+                      image.lineWidth = "8";
+
+                      for (var i = 0; i < response.objects.length; ++i) {
+                        var color = distinctColors[i % distinctColors.length];
+                        var object = response.objects[i];
+                        image.strokeStyle = color;
+                        image.fillStyle = color;
+                        image.beginPath();
+                        let [t, left, bottom, right] = object.bbox;
+                        let width = right - left;
+                        let height = bottom - t;
+                        image.rect(left, t, width, height);
+                        image.fillText(object.category, left, t - 8);
+                        image.stroke();
+                        image.closePath();
+                      }
+
+                      canvas.addEventListener('mousemove', function(evt) {
+                        var rect = canvas.getBoundingClientRect();
+                        var x = evt.clientX - rect.left;
+                        var y = evt.clientY - rect.top;
+                        x *= response.image.width/canvas.offsetWidth;
+                        y *= response.image.height/canvas.offsetHeight;
+                        for (var i = 0; i < response.objects.length; ++i) {
+                          var [t, left, bottom, right] = response.objects[i].bbox;
+                          if (x > left && x < right && y < bottom && y > t) {
+                            $('#yolo').text(response.objects[i].collecte);
+                            $('#bonjour').text(response.objects[i].category);
+                            $('#ff').text(response.objects[i].info);
+                            break;
+                          }
+                        }
+                      }, false);
+
+                    };
+                    imageObject.src = reader.result;
                   }, false);
 
                   if (file) {
                     reader.readAsDataURL(file);
+                    $.magnificPopup.open({
+                      items: {
+                        src: $("#portfolio-modal-1"),
+                        type: 'inline'
+                      }
+                    });
                   }
-
-                  document.getElementById("lolo").click();
-                  },
+                },
                 error:function(response, str, th){
                   alert("error",th);
                 }
@@ -120,81 +168,12 @@
       </div>
     </header>
 
-    <!-- Portfolio Grid Section -->
-    <section class="portfolio" id="portfolio">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-secondary mb-0">Exemples d'articles</h2>
-        <hr class="star-dark mb-5">
-        <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <a id="lolo" class="portfolio-item d-block mx-auto" href="#portfolio-modal-1">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/cabin.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-2">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/cake.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-3">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/circus.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-4">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/game.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-5">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/safe.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-6">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fa fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="img/portfolio/submarine.png" alt="">
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- About Section -->
-    <section class="bg-primary text-white mb-0" id="about">
+    <section id="about">
       <div class="container">
-        <h2 class="text-center text-uppercase text-white">Notre mission</h2>
-        <hr class="star-light mb-5">
+        <h2 class="text-center text-uppercase text-secondary mb-0">Notre mission</h2>
+        <hr class="star-dark mb-5">
         <div class="row">
           <div class="col-lg-4 ml-auto">
             <p class="lead">Beaucoup de matière recyclables <strong class="font-weight-bold" >se retrouvent souvent à la poubelle</strong> par manque de connaissance sur le recyclage et le compostage. Ces actions ont des effets néfastes pour les générations futures. Notre mission est de changer le monde un bac à la fois. Comment?</p>
@@ -203,24 +182,14 @@
             <p class="lead">L'utilisation est très simple: prenez simple une photo de l'objet à disposer et nous allons où cet objet ira. </p>
           </div>
         </div>
-        <!-- <div class="row">
-          <label class="text-center" for="file">
-            <div class="text-center mt-4">
-              <a class="btn btn-xl btn-outline-light" href="#">
-                <i class="fa fa-download mr-2"></i>
-                Download Now!
-              </a>
-            </div>
-          </label>
-        </div> -->
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
+    <section class="bg-primary text-white mb-0" id="contact">
       <div class="container">
-        <h2 class="text-center text-uppercase text-secondary mb-0">Contactez-nous</h2>
-        <hr class="star-dark mb-5">
+        <h2 class="text-center text-uppercase text-white mb-0">Contactez-nous</h2>
+        <hr class="star-light mb-5">
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <form name="sentMessage" id="contactForm" novalidate="novalidate">
@@ -300,123 +269,74 @@
         </a>
         <div class="container text-center">
           <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 id="bonjour" class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img id="marcoPolo" style="max-width:250px; max-height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt="">
-              <!-- <img id="marcoPolo" style="width:250px; height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt=""> -->
+            <div style="width:100%"> 
+                <!-- col-lg-8 mx-auto -->
+              <!-- <hr class="star-dark mb-5"> -->
+
+              <canvas id="image_canvas" style="max-width:100%; max-height:100%;"></canvas>
+
+
+              <!-- <img id="marcoPolo" style="max-width:250px; max-height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt=""> -->
+              <h3 id="bonjour" class="text-secondary text-uppercase mb-0">Project Name</h3>
               <p class="mb-5" id="yolo">who gives a shit</p>
               <p class="mb-5" id="ff">Fun factt</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div id="map" style="height: 400px;"></div>
+              <script>
+              // formdata.append('lng', 45.4949523);
+              // formdata.append('lat', -73.5635062);
+                function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  center: new google.maps.LatLng(45.4949523, -73.5635062),
+                  zoom: 15
+                });
+                var listPlaces =[
+                {
+                  name: "Ecocentre1",
+                  address: "1100 Notre-Dame St W Montreal",
+                  lat: 45.4949523,
+                  lng: -73.5635062
+                },
+                {
+                  name: "Ecocentre2",
+                  address: "2503 rue Champdoré Montreal",
+                  lat: 45.4749523,
+                  lng: -73.5635062
+                }
+                ];
 
-    <!-- Portfolio Modal 2 -->
-    <div class="portfolio-modal mfp-hide" id="portfolio-modal-2">
-      <div class="portfolio-modal-dialog bg-white">
-        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-          <i class="fa fa-3x fa-times"></i>
-        </a>
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/cake.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Portfolio Modal 3 -->
-    <div class="portfolio-modal mfp-hide" id="portfolio-modal-3">
-      <div class="portfolio-modal-dialog bg-white">
-        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-          <i class="fa fa-3x fa-times"></i>
-        </a>
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/circus.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Portfolio Modal 4 -->
-    <div class="portfolio-modal mfp-hide" id="portfolio-modal-4">
-      <div class="portfolio-modal-dialog bg-white">
-        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-          <i class="fa fa-3x fa-times"></i>
-        </a>
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/game.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Portfolio Modal 5 -->
-    <div class="portfolio-modal mfp-hide" id="portfolio-modal-5">
-      <div class="portfolio-modal-dialog bg-white">
-        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-          <i class="fa fa-3x fa-times"></i>
-        </a>
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/safe.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Portfolio Modal 6 -->
-    <div class="portfolio-modal mfp-hide" id="portfolio-modal-6">
-      <div class="portfolio-modal-dialog bg-white">
-        <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-          <i class="fa fa-3x fa-times"></i>
-        </a>
-        <div class="container text-center">
-          <div class="row">
-            <div class="col-lg-8 mx-auto">
-              <h2 class="text-secondary text-uppercase mb-0">Project Name</h2>
-              <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/submarine.png" alt="">
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
+                var infoWindow = new google.maps.InfoWindow;
+                var markers = listPlaces;
+                markers.forEach(function(markerElem) {
+                  var name = markerElem.name;
+                  var address = markerElem.address;
+                  var infowincontent = document.createElement('div');
+                  var strong = document.createElement('strong');
+                  strong.textContent = name
+                  infowincontent.appendChild(strong);
+                  infowincontent.appendChild(document.createElement('br'));
+    
+                  var text = document.createElement('text');
+                  text.textContent = address
+                  infowincontent.appendChild(text);
+                  var point = new google.maps.LatLng(
+                    parseFloat(markerElem.lat),
+                    parseFloat(markerElem.lng));
+                  var marker = new google.maps.Marker({
+                    map: map,
+                    position: point,
+                  });
+                  marker.addListener('click', function() {
+                    infoWindow.setContent(infowincontent);
+                    infoWindow.open(map, marker);
+                  });
+                });
+                }
+        
+              function doNothing() {}
+              </script>
+              <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlF6BhgpJXEmCM6r7r3Civf_zC3PohUA&callback=initMap">
+              </script>
             </div>
           </div>
         </div>
