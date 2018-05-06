@@ -26,14 +26,14 @@ def inside_polygon(x, y, points):
         p1x, p1y = p2x, p2y
     return inside
 
-def collecte_qc_dechets(x,y,filename):#x : latitude, y : longitude, filename : le geojson
+def collecte_qc_dechets(x,y,filename):
 
     with open(filename) as f:
         data = json.load(f)
 
     plt.figure()
 
-    for index, feature in enumerate(data['features']):
+    for feature in data['features']:
         size = np.shape(feature['geometry']['coordinates'])
         dim_size = len(size)
 
@@ -46,27 +46,25 @@ def collecte_qc_dechets(x,y,filename):#x : latitude, y : longitude, filename : l
                     plt.plot(x,y,marker='o',markersize=3,color='r')
                     plt.xlabel('Latitude')
                     plt.ylabel('Longitude')
-                    #msg_fr_wrapped = tw.fill(tw.dedent(feature['properties']['MESSAGE_FR'].rstrip()), width=40)
-                    #t = plt.text(x-0.02,y-0.01,feature['properties']['MUNICIPALITE'] + "\n" + feature['properties']['TYPE_DECHET'] + "\n" + msg_fr_wrapped)
-                    #t.set_bbox(dict(boxstyle='round',facecolor='seagreen', edgecolor='seagreen',alpha=0.5))
 
                 print('Municipalité : Québec')
                 print('\nType déchet : ', feature['properties']['TYPE_COLLECTE'])
                 print('\nJours de collecte : ',feature['properties']['JOUR_COLLECTE'])
+                break
 
-            else :
-                print('pas dans un secteur')
-            #if (index % 5) == 0:
-            #   print('index : %i' % index)
+    plt.savefig('polygon_qc_dechets.jpeg')
+    with open("infos_qc_dechets.txt", "w") as text_file:
+        text_file.write('Quebec' + "\n" + feature['properties']['TYPE_COLLECTE'] + "\n" + feature['properties']['JOUR_COLLECTE'])
 
-def collecte_qc_halocarbs(x,y,filename):#x : latitude, y : longitude, filename : le geojson
 
+def collecte_qc_halocarbs(x,y,filename):
+    
     with open(filename) as f:
         data = json.load(f)
 
     plt.figure()
 
-    for index, feature in enumerate(data['features']):
+    for feature in data['features']:
         size = np.shape(feature['geometry']['coordinates'])
         dim_size = len(size)
 
@@ -80,29 +78,24 @@ def collecte_qc_halocarbs(x,y,filename):#x : latitude, y : longitude, filename :
                     plt.plot(x,y,marker='o',markersize=3,color='r')
                     plt.xlabel('Latitude')
                     plt.ylabel('Longitude')
-                    #msg_fr_wrapped = tw.fill(tw.dedent(feature['properties']['MESSAGE_FR'].rstrip()), width=40)
-                    #t = plt.text(x-0.02,y-0.01,feature['properties']['MUNICIPALITE'] + "\n" + feature['properties']['TYPE_DECHET'] + "\n" + msg_fr_wrapped)
-                    #t.set_bbox(dict(boxstyle='round',facecolor='seagreen', edgecolor='seagreen',alpha=0.5))
 
                 print('Municipalité : Québec')
                 print('\nType déchet : ', feature['properties']['TYPE_COLLECTE'])
-                print('\nJours de collecte : ',feature['properties']['JOUR_COLLECTE'])
+                print('\nJours de collecte : ',feature['properties']['JOUR_COLLECTE'])            
+            break
 
-                
-
-        else :
-            print('pas dans un secteur')
-        #if (index % 5) == 0:
-        #   print('index : %i' % index)
-
+    plt.savefig('polygon_qc_halocarbs.jpeg')
+    with open("infos_qc_halocarbs.txt", "w") as text_file:
+        text_file.write(feature['properties']["NOM"] + "\n" + feature['properties']['TYPE_COLLECTE'] + "\n" + feature['properties']['JOUR_COLLECTE'])
 
 def collecte_mtl(x,y,filename):
+    
     with open(filename) as f:
         data = json.load(f)
 
     plt.figure()
 
-    for index, feature in enumerate(data['features']):
+    for feature in data['features']:
         size = np.shape(feature['geometry']['coordinates'])
         dim_size = len(size)
 
@@ -115,13 +108,11 @@ def collecte_mtl(x,y,filename):
                     plt.plot(x,y,marker='o',markersize=3,color='r')
                     plt.xlabel('Latitude')
                     plt.ylabel('Longitude')
-                    #msg_fr_wrapped = tw.fill(tw.dedent(feature['properties']['MESSAGE_FR'].rstrip()), width=40)
-                    #t = plt.text(x-0.02,y-0.01,feature['properties']['MUNICIPALITE'] + "\n" + feature['properties']['TYPE_DECHET'] + "\n" + msg_fr_wrapped)
-                    #t.set_bbox(dict(boxstyle='round',facecolor='seagreen', edgecolor='seagreen',alpha=0.5))
                 
                 print('Municipalité : ', feature['properties']['MUNICIPALITE'])
                 print('\nType déchet : ', feature['properties']['TYPE_DECHET'])
                 print('\n',feature['properties']['MESSAGE_FR'])
-
-            #if (index % 5) == 0:
-            #   print('index : %i' % index)
+                break
+    plt.savefig('polygon_mtl_recyclage.jpeg')
+    with open("infos_mtl_recyclage.txt", "w") as text_file:
+        text_file.write(feature['properties']["MUNICIPALITE"] + "\n" + feature['properties']['TYPE_DECHET'] + "\n" + feature['properties']['MESSAGE_FR'])
