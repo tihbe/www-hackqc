@@ -77,7 +77,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                  alert(response);
+                  //alert(response);
                   console.log(response);
                   var newText = response.objects[0].collecte;
                   var newTitle = response.objects[0].category;
@@ -87,6 +87,9 @@
                   });
                   $('#bonjour').text(function(i, oldText) {
                     return newTitle;
+                  });
+                  $('#ff').text(function(i, oldText) {
+                    return funFact;
                   });
                   var imgLink = file.name;
                   console.log(file)
@@ -299,11 +302,10 @@
             <div class="col-lg-8 mx-auto">
               <h2 id="bonjour" class="text-secondary text-uppercase mb-0">Project Name</h2>
               <hr class="star-dark mb-5">
-              <img id="marcoPolo" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt="">
+              <img id="marcoPolo" style="max-width:250px; max-height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt="">
+              <!-- <img id="marcoPolo" style="width:250px; height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt=""> -->
               <p class="mb-5" id="yolo">who gives a shit</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
+              <p class="mb-5" id="ff">Fun factt</p>
             </div>
           </div>
         </div>
