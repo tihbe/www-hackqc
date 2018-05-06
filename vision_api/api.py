@@ -27,7 +27,7 @@ from mrcnn import visualize
 import coco
 
 PORT = 80
-THRESHOLD = 0.75
+THRESHOLD = 0.80
 
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                 'bus', 'train', 'truck', 'boat', 'traffic light',
