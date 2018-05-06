@@ -60,7 +60,7 @@
           <img for="file" class="img-fluid mb-5 d-block mx-auto" style="width:140px; height: 140px; margin-bottom: 0px;" src="img/camera.svg" alt="">
         </label>
         <script>
-		$("#file").on("change", function(e) {
+          $("#file").on("change", function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
             var file = this.files[0];
@@ -77,39 +77,40 @@
                 processData: false,
                 contentType: false,
                 success:function(response){
-                    alert(response);
-				    console.log(response);
-					var newText = response.objects[0].collecte;
-					var newTitle = response.objects[0].category;
-					console.log(newText);
-					$('#yolo').text(function(i, oldText) {
-					  return newText;
-					});
-					$('#bonjour').text(function(i, oldText) {
-					  return newTitle;
-					});
-					var imgLink = file.name;
-					console.log(file)
-					var reader  = new FileReader();
-					reader.addEventListener("load", function () {
-					  $('#marcoPolo').attr('src', reader.result);
+                  //alert(response);
+                  console.log(response);
+                  var newText = response.objects[0].collecte;
+                  var newTitle = response.objects[0].category;
+                  var funFact = response.objects[0].info;
+                  console.log(newText);
+                  $('#yolo').text(function(i, oldText) {
+                    return newText;
+                  });
+                  $('#bonjour').text(function(i, oldText) {
+                    return newTitle;
+                  });
+                  $('#ff').text(function(i, oldText) {
+                    return funFact;
+                  });
+                  var imgLink = file.name;
 
-					}, false);
+                  var reader  = new FileReader();
+                  reader.addEventListener("load", function () {
+                    $('#marcoPolo').attr('src', reader.result);  
+                  }, false);
 
-					if (file) {
-					  reader.readAsDataURL(file);
-					}
-
-					document.getElementById("lolo").click();
+                  if (file) {
+                    reader.readAsDataURL(file);
+                  }
+                  document.getElementById("lolo").click();
                 },
                 error:function(response, str, th){
                   alert("error",th);
-				}
-            });
-          }                       
-        }; 
-        </script>
-        
+                }
+              });
+            }                       
+          });
+        </script>   
         <h1 class="text-uppercase mb-0" style="margin-left:27px">W<sup>3</sup></h1>
         <hr class="star-light">
         <h2 class="font-weight-light mb-0">Prend une photo - Trouve ton bac!</h2>
@@ -299,11 +300,10 @@
             <div class="col-lg-8 mx-auto">
               <h2 id="bonjour" class="text-secondary text-uppercase mb-0">Project Name</h2>
               <hr class="star-dark mb-5">
-              <img id="marcoPolo" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt="">
+              <img id="marcoPolo" style="max-width:250px; max-height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt="">
+              <!-- <img id="marcoPolo" style="width:250px; height:250px" class="img-fluid mb-5" src="img/portfolio/cabin.png" alt=""> -->
               <p class="mb-5" id="yolo">who gives a shit</p>
-              <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-                <i class="fa fa-close"></i>
-                Close Project</a>
+              <p class="mb-5" id="ff">Fun factt</p>
             </div>
           </div>
         </div>
