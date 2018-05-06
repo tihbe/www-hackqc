@@ -58,6 +58,10 @@ class Userform(tornado.web.RequestHandler):
     def get(self):
         self.render("fileuploadform.html")
 
+class Index(tornado.web.RequestHandler):
+    def get(self):
+        self.render("../webpage/sharegreen/w3/index.html")
+
 
 class Upload(tornado.web.RequestHandler):
     def set_default_headers(self):
@@ -117,8 +121,13 @@ class Upload(tornado.web.RequestHandler):
 
 
 application = tornado.web.Application([
-        (r"/", Upload),
+        (r"/", Index),
+        (r"/api", Upload),
         (r"/upload", Userform),
+        (r'/js/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/js'}),
+        (r'/css/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/css'}),
+        (r'/vendor/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/vendor'}),
+        (r'/img/(.*)', tornado.web.StaticFileHandler, {'path': '../webpage/sharegreen/w3/img'}),
         ], debug=False)
 
 if __name__ == "__main__":
