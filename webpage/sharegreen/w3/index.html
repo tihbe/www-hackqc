@@ -106,7 +106,7 @@
                       image.clearRect(0, 0, response.image.width, response.image.height);
                       image.drawImage(imageObject, 0, 0);
                       image.font = "bold 12pt Arial";
-                      image.lineWidth = "2";
+                      image.lineWidth = "8";
 
                       for (var i = 0; i < response.objects.length; ++i) {
                         var color = distinctColors[i % distinctColors.length];
@@ -118,7 +118,7 @@
                         let width = right - left;
                         let height = bottom - t;
                         image.rect(left, t, width, height);
-                        image.fillText(object.category, left, t - 1);
+                        image.fillText(object.category, left, t - 8);
                         image.stroke();
                         image.closePath();
                       }
@@ -179,7 +179,7 @@
             <p class="lead">Beaucoup de matière recyclables <strong class="font-weight-bold" >se retrouvent souvent à la poubelle</strong> par manque de connaissance sur le recyclage et le compostage. Ces actions ont des effets néfastes pour les générations futures. Notre mission est de changer le monde un bac à la fois. Comment?</p>
           </div>
           <div class="col-lg-4 mr-auto">
-            <p class="lead">L'utilisation est très simple: prenez simplement une photo de l'objet à disposer et nous allons vous dire où cet objet ira. </p>
+            <p class="lead">L'utilisation est très simple: prenez simplement une photo de l'objet à disposer et nous vous montrerons où cet objet ira. </p>
           </div>
         </div>
       </div>
