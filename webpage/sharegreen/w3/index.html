@@ -132,7 +132,6 @@
                         for (var i = 0; i < response.objects.length; ++i) {
                           var [t, left, bottom, right] = response.objects[i].bbox;
                           if (x > left && x < right && y < bottom && y > t) {
-                            console.log("found obj:", response.objects[i]);
                             $('#yolo').text(response.objects[i].collecte);
                             $('#bonjour').text(response.objects[i].category);
                             $('#ff').text(response.objects[i].info);
