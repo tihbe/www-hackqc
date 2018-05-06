@@ -3,6 +3,9 @@ from functions import *
 from matplotlib import pyplot as plt
 
 #--------------------------DATA DE VILLE DE QUÉBEC ----------------------------
+#SOURCE : https://www.donneesquebec.ca/recherche/fr/dataset/collecte-des-dechets#close
+#SOURCE : https://www.donneesquebec.ca/recherche/fr/dataset/collecte-des-halocarbures
+
 
 #---------- DÉCHETS -----------
 # LOCATION OF USER
