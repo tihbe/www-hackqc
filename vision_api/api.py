@@ -1,7 +1,6 @@
 # Thanks to https://technobeans.com/2012/09/17/tornado-file-uploads/ for file upload strategy
 # And https://github.com/matterport/Mask_RCNN for object detection
 
-
 import sys
 import os
 from io import BytesIO
@@ -99,19 +98,36 @@ class Upload(tornado.web.RequestHandler):
         object_array = []
 
         for current_id, (class_id, bounding_box, score) in enumerate(zip(result['class_ids'], result['rois'], result['scores'])):
-            if score < THRESHOLD:
-                continue
-            if class_names[class_id] in ["personne", "feu de circulation", "panneau d'arret", "parcometre", "oiseau", "chat", "chien", "cheval", "mouton", "vache", "elephant", "ours", 'zebre', 'giraffe']:
+            type_bac = "Recyclage (bac vert)"
+            info = u"Saviez-vous que ce genre d'item peut être recyclé en papier journal ?"
+            collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+            
+            if class_names[class_id] in ['banane', 'pomme', 'sandwich', 'orange', 'broccoli', 'carrotte', 'beigne', 'gateau']:
+                type_bac = "Composte (bac brun)"
+                info = u"Saviez-vous que les matières végétales représentent 36 % \du total des déchets produits par les ménages montréalais." 
+                collecte = u"Cet objet peut être mis dans votre bac brun, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+            elif class_names[class_id] in ['bouteille', 'coupe de vin', 'coupe', 'bol', 'livre']:
+                type_bac = "Recyclage (bac vert)"
+                info = u"Saviez-vous qu'au Québec, 80% \des contenants de verre placés dans les bacs de recyclage résidentiels sont des bouteilles de vin. Or, ce verre n’est pas recyclé! Il est généralement envoyé aux sites d’enfouissement. " 
+                collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+            elif class_names[class_id] in ['tv', 'portable', 'souris', 'manette', 'clavier', 'cellulaire']:
+                type_bac = "Écocentre"
+                info = u"Saviez-vous que les produits électroniques contiennent beaucoup de matières, comme du verre, du plastique, de l’or, de l’argent, du cuivre et du palladium, qui doivent être récupérées et recyclées." 
+                collecte = u"Cet objet doit être emmené dans un écocentre!"
+            else:
                 continue
 
+            if score < THRESHOLD:
+                continue
+            
             current_object = {
                 #"category_id": int(class_id),
                 "bbox": bounding_box.tolist(),
                 "category": class_names[class_id],
                 #"id" : current_id,
-                "type": "Recyclage (bac vert)",
-                "info": u"Saviez-vous que ce genre d'item peut être recyclé en papier journal ?",
-                "collecte": u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+                "type": type_bac,
+                "info": info,
+                "collecte": collecte
             }
             object_array.append(current_object)
 
