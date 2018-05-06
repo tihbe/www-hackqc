@@ -13,9 +13,9 @@ filename = 'collecte-des-dechets-qc.geojson'
 collecte_qc_dechets(x,y,filename)
 
 #---------- HALOCARBURES -----------
-print('HALOOOCARBURE')
-x = -71.1927211179615
-y = 46.84642400271845 
+
+x = -71.4
+y = 46.85
 filename = 'collecte-des-halocarbures-qc.geojson'
 
 collecte_qc_halocarbs(x,y,filename)
