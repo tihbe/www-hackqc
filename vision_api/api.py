@@ -29,21 +29,21 @@ import coco
 PORT = 80
 THRESHOLD = 0.80
 
-class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
-                'bus', 'train', 'truck', 'boat', 'traffic light',
-                'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird',
-                'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear',
-                'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
-                'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
-                'kite', 'baseball bat', 'baseball glove', 'skateboard',
-                'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup',
-                'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
-                'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
-                'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
-                'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
-                'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
-                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
-                'teddy bear', 'hair drier', 'toothbrush']
+class_names = ['BG', 'personne', 'velo', 'voiture', 'moto', 'avion',
+                'bus', 'train', 'camion', 'bateau', 'feu de circulation',
+                'borne fontaine', "panneau d'arret", 'parcomètre', 'banc', 'oiseau',
+                'chat', 'chien', 'cheval', 'mouton', 'vache', 'elephant', 'ours',
+                'zebre', 'giraffe', 'sac a dos', 'parapluie', 'sac a main', 'cravate',
+                'valise', 'frisbee', 'skis', 'planche a neige', 'ballon de sport',
+                'cerf-volant', 'baton de baseball', 'gant de baseball', 'skateboard',
+                'surfboard', 'raquette de tennis', 'bouteille', 'coupe de vin', 'coupe',
+                'fourchette', 'couteau', 'cuillere', 'bolle', 'banane', 'pomme',
+                'sandwich', 'orange', 'broccoli', 'carrotte', 'hot dog', 'pizza',
+                'beigne', 'gateau', 'chaise', 'divan', 'plante', 'lit',
+                'table a manger', 'toilette', 'tv', 'portable', 'souris', 'manette',
+                'clavier', 'cellulaire', 'micro-ondes', 'four', 'toaster',
+                'lavabo', 'refrigirateur', 'livre', 'horloge', 'vase', 'ciseaux',
+                'ourse en peluche', 'sechoir', 'brosse a dents']
 
 class  InferenceConfig (coco.CocoConfig):
     GPU_COUNT = 1
@@ -101,7 +101,7 @@ class Upload(tornado.web.RequestHandler):
         for current_id, (class_id, bounding_box, score) in enumerate(zip(result['class_ids'], result['rois'], result['scores'])):
             if score < THRESHOLD:
                 continue
-            if class_names[class_id] in ["person", "traffic light", "stop sign", "parking meter", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", 'zebra', 'giraffe']:
+            if class_names[class_id] in ["personne", "feu de circulation", "panneau d'arret", "parcometre", "oiseau", "chat", "chien", "cheval", "mouton", "vache", "elephant", "ours", 'zebre', 'giraffe']:
                 continue
 
             current_object = {
