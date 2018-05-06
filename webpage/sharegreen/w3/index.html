@@ -66,7 +66,7 @@
             var file = this.files[0];
             var formdata = new FormData();
             if (formdata) {
-              alert(file.name, file.size, file.type);
+              //alert(file.name, file.size, file.type);
               formdata.append('filearg', file);
               formdata.append('lng', 45.4949523);
               formdata.append('lat', -73.5635062);
@@ -81,7 +81,8 @@
                   console.log(response);
                   var newText = response.objects[0].collecte;
                   var newTitle = response.objects[0].category;
-                  console.log(newText);
+                  var funFact = response.objects[0].info;
+
                   $('#yolo').text(function(i, oldText) {
                     return newText;
                   });
