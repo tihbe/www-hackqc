@@ -281,6 +281,63 @@
               <h3 id="bonjour" class="text-secondary text-uppercase mb-0">Project Name</h3>
               <p class="mb-5" id="yolo">who gives a shit</p>
               <p class="mb-5" id="ff">Fun factt</p>
+              <div id="map" style="height: 400px;"></div>
+              <script>
+              // formdata.append('lng', 45.4949523);
+              // formdata.append('lat', -73.5635062);
+                function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  center: new google.maps.LatLng(45.4949523, -73.5635062),
+                  zoom: 15
+                });
+                var listPlaces =[
+                {
+                  name: "Ecocentre1",
+                  address: "1100 Notre-Dame St W Montreal",
+                  lat: 45.4949523,
+                  lng: -73.5635062
+                },
+                {
+                  name: "Ecocentre2",
+                  address: "2503 rue Champdoré Montreal",
+                  lat: 45.4749523,
+                  lng: -73.5635062
+                }
+                ];
+
+                var infoWindow = new google.maps.InfoWindow;
+                var markers = listPlaces;
+                markers.forEach(function(markerElem) {
+                  var name = markerElem.name;
+                  var address = markerElem.address;
+                  var infowincontent = document.createElement('div');
+                  var strong = document.createElement('strong');
+                  strong.textContent = name
+                  infowincontent.appendChild(strong);
+                  infowincontent.appendChild(document.createElement('br'));
+    
+                  var text = document.createElement('text');
+                  text.textContent = address
+                  infowincontent.appendChild(text);
+                  var point = new google.maps.LatLng(
+                    parseFloat(markerElem.lat),
+                    parseFloat(markerElem.lng));
+                  var marker = new google.maps.Marker({
+                    map: map,
+                    position: point,
+                  });
+                  marker.addListener('click', function() {
+                    infoWindow.setContent(infowincontent);
+                    infoWindow.open(map, marker);
+                  });
+                });
+                }
+        
+              function doNothing() {}
+              </script>
+              <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlF6BhgpJXEmCM6r7r3Civf_zC3PohUA&callback=initMap">
+              </script>
             </div>
           </div>
         </div>
