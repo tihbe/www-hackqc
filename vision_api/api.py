@@ -36,9 +36,9 @@ class_names = ['BG', 'personne', 'velo', 'voiture', 'moto', 'avion',
                 'valise', 'frisbee', 'skis', 'planche a neige', 'ballon de sport',
                 'cerf-volant', 'baton de baseball', 'gant de baseball', 'skateboard',
                 'surfboard', 'raquette de tennis', 'bouteille', 'coupe de vin', 'coupe',
-                'fourchette', 'couteau', 'cuillere', 'bolle', 'banane', 'pomme',
-                'sandwich', 'orange', 'broccoli', 'carrotte', 'hot dog', 'pizza',
-                'beigne', 'gateau', 'chaise', 'divan', 'plante', 'lit',
+                'fourchette', 'couteau', 'cuillere', 'bol', 'banane', 'pomme',
+                'sandwich', 'orange', 'brocoli', 'carrotte', 'hot dog', 'pizza',
+                'bagel', 'gateau', 'chaise', 'divan', 'plante', 'lit',
                 'table a manger', 'toilette', 'tv', 'portable', 'souris', 'manette',
                 'clavier', 'cellulaire', 'micro-ondes', 'four', 'toaster',
                 'lavabo', 'refrigirateur', 'livre', 'horloge', 'vase', 'ciseaux',
@@ -102,13 +102,13 @@ class Upload(tornado.web.RequestHandler):
             info = u"Saviez-vous que ce genre d'item peut être recyclé en papier journal ?"
             collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
             
-            if class_names[class_id] in ['banane', 'pomme', 'sandwich', 'orange', 'broccoli', 'carrotte', 'beigne', 'gateau']:
+            if class_names[class_id] in ['banane', 'pomme', 'sandwich', 'orange', 'brocoli', 'carrotte', 'bagel', 'gateau']:
                 type_bac = "Composte (bac brun)"
-                info = u"Saviez-vous que les matières végétales représentent 36 % \du total des déchets produits par les ménages montréalais." 
+                info = u"Saviez-vous que les matières végétales représentent 36 %% du total des déchets produits par les ménages montréalais." 
                 collecte = u"Cet objet peut être mis dans votre bac brun, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
             elif class_names[class_id] in ['bouteille', 'coupe de vin', 'coupe', 'bol', 'livre']:
                 type_bac = "Recyclage (bac vert)"
-                info = u"Saviez-vous qu'au Québec, 80% \des contenants de verre placés dans les bacs de recyclage résidentiels sont des bouteilles de vin. Or, ce verre n’est pas recyclé! Il est généralement envoyé aux sites d’enfouissement. " 
+                info = u"Saviez-vous qu'au Québec, 80%% des contenants de verre placés dans les bacs de recyclage résidentiels sont des bouteilles de vin. Or, ce verre n’est pas recyclé! Il est généralement envoyé aux sites d’enfouissement. " 
                 collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
             elif class_names[class_id] in ['tv', 'portable', 'souris', 'manette', 'clavier', 'cellulaire']:
                 type_bac = "Écocentre"
