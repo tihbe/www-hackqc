@@ -100,20 +100,24 @@ class Upload(tornado.web.RequestHandler):
         for current_id, (class_id, bounding_box, score) in enumerate(zip(result['class_ids'], result['rois'], result['scores'])):
             type_bac = "Recyclage (bac vert)"
             info = u"Saviez-vous que ce genre d'item peut être recyclé en papier journal ?"
-            collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+            collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mercredis dans votre quartier"
             
             if class_names[class_id] in ['banane', 'pomme', 'sandwich', 'orange', 'brocoli', 'carrotte', 'bagel', 'gateau']:
                 type_bac = "Composte (bac brun)"
-                info = u"Saviez-vous que les matières végétales représentent 36 %% du total des déchets produits par les ménages montréalais." 
-                collecte = u"Cet objet peut être mis dans votre bac brun, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
-            elif class_names[class_id] in ['bouteille', 'coupe de vin', 'coupe', 'bol', 'livre']:
+                info = u"Saviez-vous que vos ordures sont composées à 45 %% de matières organiques? En utilisant vos bacs vert et brun, vous aidez à diminuer considérablement les quantités de matières destinées à l’enfouissement." 
+                collecte = u"Cet objet peut être mis dans votre bac brun, celui-ci sera ramassé par la ville les mercredis dans votre quartier"
+            elif class_names[class_id] in ['bouteille', 'coupe de vin', 'coupe', 'livre']:
                 type_bac = "Recyclage (bac vert)"
                 info = u"Saviez-vous qu'au Québec, 80%% des contenants de verre placés dans les bacs de recyclage résidentiels sont des bouteilles de vin. Or, ce verre n’est pas recyclé! Il est généralement envoyé aux sites d’enfouissement. " 
-                collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mardi et jeudis dans votre quartier"
+                collecte = u"Cet objet peut être mis dans votre bac vert, celui-ci sera ramassé par la ville les mercredis dans votre quartier"
             elif class_names[class_id] in ['tv', 'portable', 'souris', 'manette', 'clavier', 'cellulaire']:
                 type_bac = "Écocentre"
                 info = u"Saviez-vous que les produits électroniques contiennent beaucoup de matières, comme du verre, du plastique, de l’or, de l’argent, du cuivre et du palladium, qui doivent être récupérées et recyclées." 
                 collecte = u"Cet objet doit être emmené dans un écocentre!"
+            elif class_names[class_id] in ['bol']:
+                type_bac = "Poubelle"
+                info = u"Saviez-vous que cet article n'est pas recyclable!" 
+                collecte = u""
             else:
                 continue
 
